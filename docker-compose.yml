@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongo:
+    image: mongo:7
+    container_name: datapilot-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=analytics
+    networks:
+      - datapilot-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: datapilot-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - LLM_PROVIDER=${LLM_PROVIDER:-openai}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4}
+      - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY}
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      - MONGO_URI=mongodb://mongo:27017
+      - MONGO_DB=analytics
+      - AZURE_BING_SEARCH_KEY=${AZURE_BING_SEARCH_KEY}
+      - AZURE_BING_SEARCH_ENDPOINT=${AZURE_BING_SEARCH_ENDPOINT}
+      - ALLOW_ORIGINS=http://localhost:5173,http://localhost:3000
+    depends_on:
+      - mongo
+    networks:
+      - datapilot-network
+
+  # Frontend Web UI
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: datapilot-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE=http://localhost:8000
+    depends_on:
+      - backend
+    networks:
+      - datapilot-network
+
+volumes:
+  mongo-data:
+    driver: local
+
+networks:
+  datapilot-network:
+    driver: bridge
