@@ -2,13 +2,14 @@ from pydantic_settings import BaseSettings
 from typing import Optional, List
 
 
+
 class Settings(BaseSettings):
     # LLM Configuration
-    llm_provider: str = "openai"  # openai, hf, ollama
+    llm_provider: str = "ollama"  # openai, hf, ollama
     
     # OpenAI
-    openai_api_key: Optional[str] = None
-    openai_model: str = "gpt-4"
+    # openai_api_key: Optional[str] = None
+    # openai_model: str = "gpt-4"
     
     # Hugging Face
     huggingface_api_key: Optional[str] = None
@@ -16,7 +17,7 @@ class Settings(BaseSettings):
     
     # Ollama
     ollama_base_url: str = "http://localhost:11434"
-    ollama_model: str = "llama3.1:8b"
+    ollama_model: str = "llama3.2:latest"
     
     # MongoDB
     mongo_uri: str = "mongodb://localhost:27017"

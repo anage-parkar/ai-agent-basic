@@ -159,7 +159,7 @@ class LLMProvider:
     """Abstract LLM provider supporting OpenAI, Hugging Face, and Ollama"""
     
     def __init__(self):
-        self.provider = "ollama"
+        self.provider = settings.llm_provider.lower()
         
         if self.provider == "openai":
             if not settings.openai_api_key:
