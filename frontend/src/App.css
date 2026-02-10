@@ -230,25 +230,47 @@ body {
 }
 
 .message-content {
-  max-width: 70%;
-  padding: 12px 16px;
+  max-width: 80%;
+  padding: 14px 18px;
   border-radius: 12px;
-  line-height: 1.5;
+  line-height: 1.6;
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+
+/* Better formatting for lists in assistant messages */
+.message-bubble.assistant .message-content {
+  background: white;
+  color: #333;
+  border: 1px solid #e0e0e0;
+  border-bottom-left-radius: 4px;
+}
+
+/* Style bullet points in assistant responses */
+.message-bubble.assistant .message-content ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 8px 0;
+}
+
+.message-bubble.assistant .message-content li {
+  margin: 6px 0;
+  padding-left: 20px;
+  position: relative;
+}
+
+.message-bubble.assistant .message-content li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #667eea;
+  font-weight: bold;
 }
 
 .message-bubble.user .message-content {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border-bottom-right-radius: 4px;
-}
-
-.message-bubble.assistant .message-content {
-  background: white;
-  color: #333;
-  border: 1px solid #e0e0e0;
-  border-bottom-left-radius: 4px;
 }
 
 .artifacts-section {
@@ -419,7 +441,7 @@ body {
   }
   
   .message-content {
-    max-width: 85%;
+    max-width: 90%;
   }
   
   .status-bar {
